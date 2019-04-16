@@ -86,7 +86,6 @@ l_dir *linking_path(l_dir *head, char *newstr)
 	l_path = malloc(sizeof(l_dir));
 	if (l_path == NULL)
 	{
-		free(l_path);
 		return (NULL);
 	}
 	l_path->str = _strdup(newstr);
@@ -111,31 +110,16 @@ l_dir *linking_path(l_dir *head, char *newstr)
  **/
 int print_env(void)
 {
-	char **copy_env;
 	int x = 0, y, _write;
 
-	copy_env = malloc(sizeof(char *) * 64);
 	while (*(environ + x))
 	{
-		*(copy_env + x) = _strdup(*(environ + x));
-		x++;
-	}
-	x = 0;
-	while (*(copy_env + x))
-	{
-		for (y = 0; *(*(copy_env + x) + y) != '\0'; y++)
+		for (y = 0; *(*(environ + x) + y) != '\0'; y++)
 		{}
-		_write = write(STDOUT_FILENO, *(copy_env + x), y);
+		_write = write(STDOUT_FILENO, *(environ + x), y);
 		write(STDOUT_FILENO, "\n", 1);
 		x++;
 	}
-	x = 0;
-	while (*(copy_env + x))
-	{
-		free(*(copy_env + x));
-		x++;
-	}
-	free(copy_env);
 	if (_write == -1)
 		return (0);
 	return (0);
@@ -150,4 +134,5 @@ void handler(int num)
 {
 	(void)num;
 	write(STDOUT_FILENO, ".|.(-_-).|.", 11);
+	fflush(stdout);
 }

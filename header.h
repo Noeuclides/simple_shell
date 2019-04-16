@@ -31,9 +31,9 @@ typedef struct list_dir
 
 int prompt(l_dir *head, int len);
 char *concat_path(char *str, l_dir *head);
-char **tok(char *ptobuf);
+char **tok(char *ptobuf, l_dir *head);
 char **quotes(char **execline, char *quotesdel);
-int hijo_path(char **execline, l_dir *head);
+int hijo_path(char **execline, l_dir *head, char *ptobuf);
 char *_getenv(void);
 l_dir *get_path(char *find);
 l_dir *linking_path(l_dir *head, char *newstr);
