@@ -175,7 +175,7 @@ int hijo_path(char **execline, l_dir *head, char *ptobuf)
 		else
 		{
 			free_listint(head);
-			exit(100);
+			exit(EXIT_SUCCESS);
 		}
 		if (stat(*execline, &buf) == 0)
 			break;
@@ -188,7 +188,7 @@ int hijo_path(char **execline, l_dir *head, char *ptobuf)
 		free_listint(head);
 		free(execline);
 		free(ptobuf);
-		exit(100);
+		exit(EXIT_SUCCESS);
 	}
 	else
 	{

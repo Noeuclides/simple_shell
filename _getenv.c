@@ -49,7 +49,7 @@ l_dir *get_path(char *find)
 	if (!find)
 	{
 		perror("PATH is empty");
-		exit(100);
+		exit(EXIT_SUCCESS);
 	}
 	str = strtok(find, "=");
 	while (str)
