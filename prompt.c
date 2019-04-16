@@ -14,7 +14,7 @@ int prompt(l_dir *head, int len)
 {
 	char *ptobuf = NULL, **execline = NULL, *env = "env";
 	size_t size = 0;
-	int hijo, sw = 1, line = 0, n = 1;
+	int hijo, sw = 1, line = 0;
 
 	while (line != -1 && sw == 1)
 	{
@@ -39,14 +39,14 @@ int prompt(l_dir *head, int len)
 			perror("2. fork");
 		else if (hijo == 0)
 		{
-			n = hijo_path(execline, head, ptobuf);
+			hijo_path(execline, head, ptobuf);
 			sw = 0;
 		}
 		else
 			wait(NULL);
 		free(execline);
 	}
-	return (n);
+	return (0);
 }
 
 

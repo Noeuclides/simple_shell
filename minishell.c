@@ -10,7 +10,7 @@ int main(void)
 {
 	char *find = NULL;
 	l_dir *head = NULL;
-	int n = 1, len = 26;
+	int len = 26;
 
 	signal(SIGINT, handler);
 
@@ -20,6 +20,6 @@ int main(void)
 
 	head = get_path(find);
 	free(find);
-	n = prompt(head, len);
-	return (n);
+	prompt(head, len);
+	return (0);
 }
