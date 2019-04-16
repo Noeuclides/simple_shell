@@ -1,0 +1,59 @@
+.TH Mishell 1  "1.0" "Mishell man page"
+.SH NAME
+.B Mishell
+\   UNIX command interpreter.
+.B ( Mishell )
+.SH DESCRIPTION
+.B Mishell
+- This version with the process of SH shell can run from main commands and work with the\
+flags of this. In this document, you will find the main characterizes at the functionality\
+of this program.
+.PP
+.B Overview
+- is a Unix shell that can be used as an interactive login shell and as a command\
+interpreter for shell scripting. Mishell is an extended Bourne shell with a the principal\
+commands. Mishell runs clonnig the principal repository\
+(https://github.com/Noeuclides/simple_shell), compile, un run it with ./hsh.
+.PP
+.SH Invocation
+You can run it with a iterative mode, only run ./hsh and you can acces to all pricipal\
+commands.
+But there is another mode, the non-interactuve mode, in this mode you can run it whit the\
+standar output. Example:
+.PP
+$ echo "/bin/ls" | ./hsh
+.PP
+hsh main.c shell.c test_ls_2
+.PP
+$
+.PP
+.SH Commands
+The shell reads commands from the user. The first command argument is taken and conca\
+tenated to the value of the PATH environmental variables deliminated by colons. 
+.PP
+.PP
+.B "exit"
+.PP
+Terminates the shell.
+.PP
+.B echo args"..." || echo args'...'
+.PP
+Print the arguments to stdout -
+.PP
+.B env
+.PP
+Prints environment variables to stdout.
+.PP
+.B command [-flags]
+ execute  directory contents -
+
+.SH BUGS
+---
+
+.SH AUTHORS
+.B Nicolás Martínez Machado
+<792@holbertonschool.com>
+.PP
+.B Alejandro Rey Rios
+<771@holbertonschool.com>
+.SH Mishell "April, 15, 2019"
