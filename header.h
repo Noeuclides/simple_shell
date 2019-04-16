@@ -1,6 +1,5 @@
 #ifndef _SHELL_H
 #define _SHELL_H
-
 #include<stdio.h>
 #include<stdlib.h>
 #include<unistd.h>
@@ -11,10 +10,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <signal.h>
-
 extern char **environ;
 void sighandler(int);
-
 /**
  * struct list_dir - structure
  *
@@ -25,16 +22,15 @@ void sighandler(int);
  */
 typedef struct list_dir
 {
-	char *str;
-	struct list_dir *next;
+        char *str;
+        struct list_dir *next;
 } l_dir;
-
 int prompt(l_dir *head, int len);
 char *concat_path(char *str, l_dir *head);
-char **tok(char *ptobuf);
+char **tok(char *ptobuf, l_dir *head);
 char **quotes(char **execline, char *quotesdel);
-int hijo_path(char **execline, l_dir *head);
-char *_getenv();
+int hijo_path(char **execline, l_dir *head, char *ptobuf);
+char *_getenv(void);
 l_dir *get_path(char *find);
 l_dir *linking_path(l_dir *head, char *newstr);
 int print_env(void);
@@ -45,5 +41,4 @@ char *_strdup(char *str);
 int _strcmp(char *s1, char *s2);
 int print_env(void);
 void free_listint(l_dir *head);
-
 #endif
