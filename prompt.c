@@ -185,7 +185,15 @@ int hijo_path(char **execline, l_dir *head, char *ptobuf)
 	if (*execline != NULL && rexe == -1)
 	{
 		perror("2. Executable NOT FOUND");
+		free_listint(head);
+		free(execline);
+		free(ptobuf);
 		exit(100);
+	}
+	else
+	{
+		free(ptobuf);
+		free(execline);
 	}
 	return (0);
 }
