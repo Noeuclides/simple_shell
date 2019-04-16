@@ -12,24 +12,22 @@
 
 int prompt(l_dir *head, int len)
 {
-	char *buffer[] = {NULL};
-	char **ptobuf = NULL, **execline = NULL, *env = "env";
+	char *ptobuf = NULL, **execline = NULL, *env = "env";
 	size_t size = 0;
 	int hijo, sw = 1, line = 0, n = 1;
 
-	ptobuf = buffer;
 	while (line != -1 && sw == 1)
 	{
 		if (write(1, "\x1B[1;35m( ⚆ _ ⚆ ) \x1B[0m", len) == -1)
 			perror("0. write");
-		line = getline(ptobuf, &size, stdin);
+		line = getline(&ptobuf, &size, stdin);
 		if (line == -1)
 		{
-			free(*ptobuf);
+			free(ptobuf);
 			free_listint(head);
 			return (-1);
 		}
-		execline = tok(*ptobuf);
+		execline = tok(ptobuf, head);
 		execline = quotes(execline, "\'\"");
 		if (_strcmp(*execline, env) == 0)
 		{
@@ -41,10 +39,8 @@ int prompt(l_dir *head, int len)
 			perror("2. fork");
 		else if (hijo == 0)
 		{
-			n = hijo_path(execline, head);
-			free_listint(head);
+			n = hijo_path(execline, head, ptobuf);
 			sw = 0;
-			free(*ptobuf);
 		}
 		else
 			wait(NULL);
@@ -74,8 +70,10 @@ char *concat_path(char *str, l_dir *head)
 	{
 		first = str_concat("/", str);
 		paths = str_concat(aux->str, first);
+		free(first);
 		if (stat(paths, &buf) == 0)
 			return (paths);
+		free(paths);
 		aux = aux->next;
 	}
 
@@ -87,9 +85,11 @@ char *concat_path(char *str, l_dir *head)
  *
  *@ptobuf: array of pointer with the commands and option the user put in
  *
+ *@head: a pointer to the first node of the linked list
+ *
  *Return: array of pointer without those chars.
  **/
-char **tok(char *ptobuf)
+char **tok(char *ptobuf, l_dir *head)
 {
 	char *delimiters = " \t\r\n\v\f";/*delimitadores a remover del ptobuf*/
 	char *cleanline;/*puntero al path con el comando a ejecutar*/
@@ -103,21 +103,26 @@ char **tok(char *ptobuf)
 		return (aline);
 	}
 	cleanline = strtok(ptobuf, delimiters);
-	aline[0] = cleanline;
 	if (!cleanline)
 	{
+		/* free(aline); */
 		return (aline);
 	}
+	aline[0] = cleanline;
 	while (cleanline != NULL)
 	{
 		cleanline = strtok(NULL, delimiters);
 		aline[i] = cleanline;
 		i++;
 	}
-	comp = _strcmp(*aline, "exit");
+	comp = _strcmp(aline[0], "exit");
 	if (comp == 0)
+	{
+		free(aline);
+		free(ptobuf);
+		free_listint(head);
 		exit(EXIT_SUCCESS);
-
+	}
 	return (aline);
 }
 
@@ -152,9 +157,11 @@ char **quotes(char **execline, char *quotesdel)
  *
  *@head: pointer to a linked list with the paths
  *
+ *@ptobuf: string to the command's user.
+ *
  *Return: 0 when succeed
  **/
-int hijo_path(char **execline, l_dir *head)
+int hijo_path(char **execline, l_dir *head, char *ptobuf)
 {
 	l_dir *aux_list = NULL;
 	struct stat buf;
@@ -167,7 +174,7 @@ int hijo_path(char **execline, l_dir *head)
 			*execline = concat_path(*execline, aux_list);
 		else
 		{
-			free(*execline);
+			free_listint(head);
 			exit(100);
 		}
 		if (stat(*execline, &buf) == 0)
@@ -180,6 +187,5 @@ int hijo_path(char **execline, l_dir *head)
 		perror("2. Executable NOT FOUND");
 		exit(100);
 	}
-
 	return (0);
 }
