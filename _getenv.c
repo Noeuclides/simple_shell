@@ -3,8 +3,6 @@
 /**
  *_getenv - function that finds the PATH variable in the env
  *
- *@name: PATH
- *
  *Return: PATH
  **/
 char *_getenv(void)
