@@ -34,7 +34,7 @@ char *concat_path(char *str, l_dir *head);
 char **tok(char *ptobuf);
 char **quotes(char **execline, char *quotesdel);
 int hijo_path(char **execline, l_dir *head);
-char *_getenv();
+char *_getenv(void);
 l_dir *get_path(char *find);
 l_dir *linking_path(l_dir *head, char *newstr);
 int print_env(void);
