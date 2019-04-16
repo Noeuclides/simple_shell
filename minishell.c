@@ -12,7 +12,7 @@ int main(void)
 	l_dir *head = NULL;
 	int n = 1, len = 26;
 
-	find = _getenv("PATH");
+	find = _getenv();
 	if (isatty(STDIN_FILENO) != 1)
 		len = 0;
 

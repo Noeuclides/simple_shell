@@ -1,152 +1,125 @@
 #include "header.h"
-/**
- *_getenv - function that finds the PATH variable in the env
- *
- *@name: PATH
- *
- *Return: PATH
- **/
-char *_getenv(void)
-{
-	char *aux = NULL;
-	int i, j, l = 0;
-	char *name = "PATH";
-	aux = malloc(sizeof(char) * 128);
 
-	for (i = 0; *(environ + i); i++)
-	{
-		for (j = 0; *(*(environ + i) + j) != '='; j++)
-		{
-			if (name[j] != *(*(environ + i) + j))
-				break;
-			l++;
-		}
-		if (l == 4)
-		{
-			free(aux);
-			return (_strdup(*(environ + i)));
-		}
-		l = 0;
-	}
-	free(aux);
-	if (aux == NULL)
-		perror("no hay PATH");
-	return (aux);
-}
 /**
- *get_path - function to get the path of directories
- *
- *@find: enviroment variable PATH to search dirs.
- *
- *Return: a pointer to a linked list of the dir's PATH
- **/
-l_dir *get_path(char *find)
+ * str_concat - function for concatenate
+ * @s1: string 1
+ * @s2: string2
+ * Return: New pointer
+ */
+char *str_concat(char *s1, char *s2)
 {
-	char *newstr = NULL;
-	l_dir *head = NULL; /*temporal node to print the list*/
-	char *str = NULL;
+	int a = 0, b = 0, c = 0, d = 0;
+	char *x;
 
-	if (!find)
-	{
-		perror("PATH is empty");
-		exit(100);
-	}
-	str = strtok(find, "=");
-	while (str)
-	{
-		str = strtok(NULL, "=");
-		if (str)
-		{
-			newstr = strtok(str, ":");
-			while (newstr)
-			{
-				head = linking_path(head, newstr); /*send str and add node one by one*/
-				newstr = strtok(NULL, ":");
-			}
-		}
-	}
-	free(str);
-	free(newstr);
-	return (head);
-}
-/**
- *linking_path - function that generates the linked list with the dir's PATH.
- *
- *@head: pointer to the linked list.
- *
- *@newstr: address of diretories.
- *
- *Return: linked list.
- **/
-l_dir *linking_path(l_dir *head, char *newstr)
-{
-	l_dir *l_path = NULL;
-	l_dir *aux = NULL;
-
-	l_path = malloc(sizeof(l_dir));
-	if (l_path == NULL)
-	{
-		free(l_path);
+	if (s1 == NULL)
+		s1 = "";
+	if (s2 == NULL)
+		s2 = "";
+	for ( ; s1[a]; a++)
+	{}
+	for ( ; s2[b]; b++)
+	{}
+	b++;
+	x = malloc(sizeof(char) * a + b);
+	if (x == NULL)
 		return (NULL);
-	}
-	l_path->str = _strdup(newstr);
-	if (head == NULL)
+	for ( ; c < a; c++)
+		x[c] = s1[c];
+	for ( ; d < b; d++)
 	{
-		l_path->next = head;
-		head = l_path;
+		x[c] = s2[d];
+		c++;
 	}
-	aux = head;
-	while (aux->next)
-	{
-		aux = aux->next;
-	}
-	aux->next = l_path;
-	l_path->next = NULL;
-	return (head); /*return de header node*/
-}
-/**
- *print_env - function that prints a copy of the enviroment variables
- *
- *Return: 0 when succeed.
- **/
-int print_env(void)
-{
-	char **copy_env;
-	int x = 0, y, _write;
-	copy_env = malloc(sizeof(char *) * 64);
-	while(*(environ + x))
-	{
-		*(copy_env + x) = _strdup(*(environ + x));
-		x++;
-	}
-	x = 0;
-	while (*(copy_env + x))
-	{
-		for (y = 0; *(*(copy_env + x) + y) != '\0'; y++)
-		{}
-		_write = write(STDOUT_FILENO, *(copy_env + x), y);
-		write(STDOUT_FILENO, "\n", 1);
-		x++;
-	}
-	x = 0;
-	while (*(copy_env + x))
-	{
-		free(*(copy_env + x));
-		x++;
-	}
-	free(copy_env);
-	if (_write == -1)
-		return (0);
-	return (0);
+
+	return (x);
 }
 
 /**
- *handler - function that handles a signal(crtl + c)
- *
- *@num: signal id.
- **/
-void handler(int num)
+***_strdup_const - create an array of char
+*
+*@str: string parameter
+*
+*Return: array of char
+*/
+
+char *_strdup_const(const char *str)
 {
-	(void)num;
-	write(STDOUT_FILENO, ".|.(-_-).|.", 11);
+	char *p;
+	unsigned int i, j;
+
+	if (str == '\0')
+		return (NULL);
+
+	for (i = 0; str[i] != '\0'; i++)
+	{
+	}
+
+	p = malloc(sizeof(char) * i + 1);
+
+	if (!p)
+		return (NULL);
+
+	for (j = 0; j <= i; j++)
+	{
+		p[j] = str[j];
+	}
+
+	return (p);
+}
+
+/**
+***_strdup - func returns pointer to newstring which is a dup of the string s.
+*
+*@str: string parameter
+*
+*Return: array of char
+*/
+
+char *_strdup(char *str)
+{
+	char *p;
+	unsigned int i, j;
+
+	if (str == '\0')
+		return (NULL);
+
+	for (i = 0; str[i] != '\0'; i++)
+	{
+	}
+
+	p = malloc(sizeof(char) * i + 1);
+
+	if (!p)
+		return (NULL);
+
+	for (j = 0; j <= i; j++)
+	{
+		p[j] = str[j];
+	}
+
+	return (p);
+}
+
+/**
+ * _strcmp - compare an array to another.
+ * @s1: array 1
+ * @s2: array 2.
+ * Return: Always 0.
+ */
+
+int _strcmp(char *s1, char *s2)
+{
+	int len, dif = 0;
+
+	if (s1 == NULL)
+		s1 = "";
+	if (s2 == NULL)
+		s2 = "";
+
+	for (len = 0; (s1[len] || s2[len]) && dif == 0; len++)
+	{
+		dif = s1[len] - s2[len];
+	}
+
+	return (dif);
 }

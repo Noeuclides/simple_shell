@@ -1,4 +1,5 @@
 #include "header.h"
+
 /**
  *_getenv - function that finds the PATH variable in the env
  *
@@ -11,6 +12,7 @@ char *_getenv(void)
 	char *aux = NULL;
 	int i, j, l = 0;
 	char *name = "PATH";
+
 	aux = malloc(sizeof(char) * 128);
 
 	for (i = 0; *(environ + i); i++)
@@ -113,8 +115,9 @@ int print_env(void)
 {
 	char **copy_env;
 	int x = 0, y, _write;
+
 	copy_env = malloc(sizeof(char *) * 64);
-	while(*(environ + x))
+	while (*(environ + x))
 	{
 		*(copy_env + x) = _strdup(*(environ + x));
 		x++;
