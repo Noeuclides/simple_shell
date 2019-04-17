@@ -110,18 +110,21 @@ l_dir *linking_path(l_dir *head, char *newstr)
  **/
 int print_env(void)
 {
-	int x = 0, y, _write;
+	int x = 0, y;
 
+	if (environ == NULL)
+		return (0);
 	while (*(environ + x))
 	{
 		for (y = 0; *(*(environ + x) + y) != '\0'; y++)
 		{}
-		_write = write(STDOUT_FILENO, *(environ + x), y);
-		write(STDOUT_FILENO, "\n", 1);
+		/*
+		 * write(STDOUT_FILENO, *(environ + x), y);
+		 * write(STDOUT_FILENO, "\n", 1);
+		*/
 		x++;
 	}
-	if (_write == -1)
-		return (0);
+
 	return (0);
 }
 

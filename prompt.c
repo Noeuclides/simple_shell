@@ -5,8 +5,6 @@
  *
  *@head: pointer to a linked list with the paths
  *
- *@len: len of the prompt, 0 if isatty is not terminal
- *
  *Return: 0 when succeed.
  **/
 
@@ -18,8 +16,6 @@ int prompt(l_dir *head)
 
 	while (line != -1 && sw == 1)
 	{
-		/*if (write(1, "", 0) == -1)
-		  perror("0. write");*/
 		line = getline(&ptobuf, &size, stdin);
 		if (line == -1)
 		{
@@ -31,16 +27,15 @@ int prompt(l_dir *head)
 		if (execline == NULL)
 			continue;
 		execline = quotes(execline, "\'\"");
-		if (_strcmp(*execline, env) == 0)
-		{
-			if (print_env() != 0)
-				perror("No env");
-		}
+
 		hijo = fork();
+
 		if (hijo == -1)
 			perror("2. fork");
 		else if (hijo == 0)
 		{
+			if (_strcmp(*execline, env) == 0)
+				print_env();
 			if (!execline)
 			{
 				free(execline);
