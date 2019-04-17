@@ -29,7 +29,7 @@ typedef struct list_dir
 	struct list_dir *next;
 } l_dir;
 
-int prompt(l_dir *head, int len);
+int prompt(l_dir *head);
 char *concat_path(char *str, l_dir *head);
 char **tok(char *ptobuf, l_dir *head);
 char **quotes(char **execline, char *quotesdel);

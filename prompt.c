@@ -10,7 +10,7 @@
  *Return: 0 when succeed.
  **/
 
-int prompt(l_dir *head, int len)
+int prompt(l_dir *head)
 {
 	char *ptobuf = NULL, **execline = NULL, *env = "env";
 	size_t size = 0;
@@ -18,12 +18,12 @@ int prompt(l_dir *head, int len)
 
 	while (line != -1 && sw == 1)
 	{
-		if (write(1, "\x1B[1;35m( ⚆ _ ⚆ ) \x1B[0m", len) == -1)
+		if (write(1, "", 0) == -1)
 			perror("0. write");
 		line = getline(&ptobuf, &size, stdin);
 		if (line == -1)
 		{
-			free(ptobuf);
+			/*free(ptobuf);*/
 			free_listint(head);
 			return (-1);
 		}
@@ -39,6 +39,9 @@ int prompt(l_dir *head, int len)
 			perror("2. fork");
 		else if (hijo == 0)
 		{
+			if (!execline)
+				return (0);
+
 			hijo_path(execline, head, ptobuf);
 			sw = 0;
 		}
@@ -99,13 +102,13 @@ char **tok(char *ptobuf, l_dir *head)
 	aline = malloc(sizeof(char *) * 64);
 	if (!aline)
 	{
-		free(aline);
+		/*free(aline);*/
 		return (aline);
 	}
 	cleanline = strtok(ptobuf, delimiters);
 	if (!cleanline)
 	{
-		/* free(aline); */
+		free(ptobuf);
 		return (aline);
 	}
 	aline[0] = cleanline;

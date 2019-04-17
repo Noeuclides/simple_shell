@@ -10,16 +10,15 @@ int main(void)
 {
 	char *find = NULL;
 	l_dir *head = NULL;
-	int len = 26;
 
 	signal(SIGINT, handler);
 
 	find = _getenv();
-	if (isatty(STDIN_FILENO) != 1)
-		len = 0;
+	isatty(STDIN_FILENO);
+
 
 	head = get_path(find);
 	free(find);
-	prompt(head, len);
+	prompt(head);
 	return (0);
 }
