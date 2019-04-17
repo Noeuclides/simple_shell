@@ -18,16 +18,18 @@ int prompt(l_dir *head)
 
 	while (line != -1 && sw == 1)
 	{
-		if (write(1, "", 0) == -1)
-			perror("0. write");
+		/*if (write(1, "", 0) == -1)
+		  perror("0. write");*/
 		line = getline(&ptobuf, &size, stdin);
 		if (line == -1)
 		{
-			/*free(ptobuf);*/
+			free(ptobuf);
 			free_listint(head);
 			return (-1);
 		}
 		execline = tok(ptobuf, head);
+		if (execline == NULL)
+			continue;
 		execline = quotes(execline, "\'\"");
 		if (_strcmp(*execline, env) == 0)
 		{
@@ -40,8 +42,10 @@ int prompt(l_dir *head)
 		else if (hijo == 0)
 		{
 			if (!execline)
+			{
+				free(execline);
 				return (0);
-
+			}
 			hijo_path(execline, head, ptobuf);
 			sw = 0;
 		}
@@ -102,14 +106,14 @@ char **tok(char *ptobuf, l_dir *head)
 	aline = malloc(sizeof(char *) * 64);
 	if (!aline)
 	{
-		/*free(aline);*/
-		return (aline);
+		free(ptobuf);
+		return (NULL);
 	}
 	cleanline = strtok(ptobuf, delimiters);
 	if (!cleanline)
 	{
-		free(ptobuf);
-		return (aline);
+		free(aline);
+		return (NULL);
 	}
 	aline[0] = cleanline;
 	while (cleanline != NULL)
@@ -184,7 +188,7 @@ int hijo_path(char **execline, l_dir *head, char *ptobuf)
 			break;
 		aux_list = aux_list->next;
 	}
-	rexe = execve(*execline, execline, NULL);
+	rexe = execve(*execline, execline, environ);
 	if (*execline != NULL && rexe == -1)
 	{
 		perror("2. Executable NOT FOUND");
